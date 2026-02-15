@@ -3,6 +3,8 @@ import SectionsRenderer from "@/components/SectionsRenderer"
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 
+// ISR is set to 60 seconds to balance performance and content freshness.
+// In a production setup, I would use on-demand revalidation triggered by Contentful webhooks.
 export const revalidate = 60
 
 interface Props {
@@ -15,11 +17,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!page) return { title: slug }
 
   const seo = page.fields.seo?.fields
+  const ogUrl = seo?.ogImage?.fields?.file?.url
+    ? `https:${seo.ogImage.fields.file.url}`
+    : undefined
+
   return {
     title: seo?.metaTitle ?? slug,
     description: seo?.metaDescription,
-    openGraph: seo?.ogImage?.fields?.file?.url
-      ? { images: [{ url: seo.ogImage.fields.file.url }] }
+    openGraph: ogUrl
+      ? { images: [{ url: ogUrl }] }
       : undefined,
   }
 }

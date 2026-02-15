@@ -24,7 +24,7 @@ async function main() {
   console.log("Creation of content...")
 
   //Promotions
-  const promoWashing = await environment.createEntry("promotion", {
+  const washingPromo = await environment.createEntry("promotion", {
     fields: {
       internalName: { "en-US": "Washing Machine Promo" },
       title: { "en-US": "Washing Machine Promo" },
@@ -33,9 +33,9 @@ async function main() {
       link: { "en-US": "/shop/washing-machines" },
     },
   })
-  await promoWashing.publish()
+  await washingPromo.publish()
 
-  const promoCoffee = await environment.createEntry("promotion", {
+  const coffeePromo = await environment.createEntry("promotion", {
     fields: {
       internalName: { "en-US": "Coffee Machine Bundle" },
       title: { "en-US": "Coffee Machine Bundle" },
@@ -44,9 +44,9 @@ async function main() {
       link: { "en-US": "/shop/coffee-machines" },
     },
   })
-  await promoCoffee.publish()
+  await coffeePromo.publish()
 
-  const promoVacuum = await environment.createEntry("promotion", {
+  const vacuumPromo = await environment.createEntry("promotion", {
     fields: {
       internalName: { "en-US": "Vacuum Cleaner Deal" },
       title: { "en-US": "Vacuum Cleaner Deal" },
@@ -55,7 +55,7 @@ async function main() {
       link: { "en-US": "/shop/vacuums" },
     },
   })
-  await promoVacuum.publish()
+  await vacuumPromo.publish()
 
   // CTAs
   const ctaShop = await environment.createEntry("callToAction", {
@@ -111,9 +111,9 @@ async function main() {
       },
       promotions: {
         "en-US": [
-          { sys: { type: "Link", linkType: "Entry", id: promoWashing.sys.id } },
-          { sys: { type: "Link", linkType: "Entry", id: promoCoffee.sys.id } },
-          { sys: { type: "Link", linkType: "Entry", id: promoVacuum.sys.id } },
+          { sys: { type: "Link", linkType: "Entry", id: washingPromo.sys.id } },
+          { sys: { type: "Link", linkType: "Entry", id: coffeePromo.sys.id } },
+          { sys: { type: "Link", linkType: "Entry", id: vacuumPromo.sys.id } },
         ],
       },
     },

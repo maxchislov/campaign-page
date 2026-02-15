@@ -1,5 +1,5 @@
 module.exports = function (migration) {
-  // 1. Call To Action
+  // Call To Action
   const cta = migration
     .createContentType("callToAction")
     .name("Call To Action")
@@ -22,7 +22,7 @@ module.exports = function (migration) {
     .validations([{ in: ["Primary", "Secondary", "Text Link"] }])
     .defaultValue({ "en-US": "Primary" })
 
-  // 2. Promotion (The Shared Content)
+  // Promotion
   const promotion = migration
     .createContentType("promotion")
     .name("Promotion Card")
@@ -44,7 +44,7 @@ module.exports = function (migration) {
   promotion.createField("startDate").name("Start Date").type("Date")
   promotion.createField("endDate").name("End Date").type("Date")
 
-  // 3. Hero Section
+  // Hero
   const hero = migration
     .createContentType("componentHero")
     .name("Component: Hero")
@@ -68,7 +68,7 @@ module.exports = function (migration) {
       validations: [{ linkContentType: ["callToAction"] }],
     })
 
-  // 4. Promotion Grid Section
+  // Promotion grid
   const grid = migration
     .createContentType("componentPromotionGrid")
     .name("Component: Promotion Grid")
@@ -96,7 +96,7 @@ module.exports = function (migration) {
       validations: [{ linkContentType: ["promotion"] }],
     }) // This enforces reusability of Promotion entries
 
-  // 5. Footer Section
+  // Footer
   const footer = migration
     .createContentType("componentFooter")
     .name("Component: Footer")
@@ -114,7 +114,7 @@ module.exports = function (migration) {
     .linkType("Entry")
     .validations([{ linkContentType: ["callToAction"] }])
 
-  // 6. SEO
+  // SEO
   const seo = migration
     .createContentType("seo")
     .name("SEO")
@@ -125,7 +125,7 @@ module.exports = function (migration) {
   seo.createField("metaDescription").name("Meta Description").type("Text")
   seo.createField("ogImage").name("OG Image").type("Link").linkType("Asset")
 
-  // 7. Page
+  // Page
   const page = migration
     .createContentType("page")
     .name("Page")

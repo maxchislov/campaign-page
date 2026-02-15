@@ -60,8 +60,7 @@ The "Shop Now" CTA entry is referenced by both the Hero and the Promotion Grid s
 
 ## Tradeoffs & Future Improvements
 
-- Currently using manual TypeScript types for Contentful entries.
-  In production, I would generate types via `contentful-typescript-codegen`.
+- Types mirror the Contentful model manually. For larger projects I'd likely generate these.
 
 - The seed script is not idempotent — running it twice creates duplicates.
   A real pipeline would upsert entries by `internalName`.
@@ -69,5 +68,5 @@ The "Shop Now" CTA entry is referenced by both the Hero and the Promotion Grid s
 - No caching strategy beyond ISR (`revalidate = 60`).
   For production, I would add on-demand revalidation via Contentful webhooks.
 
-- No test suite was added due to time constraints.
-  I would start with integration tests for the fetch layer and snapshot tests for the section components.
+- I prioritized CMS modeling and page composition for this task.
+  If extended further, I would introduce integration tests around the fetch layer and component rendering.
