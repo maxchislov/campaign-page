@@ -1,8 +1,6 @@
 # Promotional Campaign Page
 
-A CMS-driven promotional campaign page built with **Next.js 16**, **Tailwind CSS v4**, and **Contentful**.
-
-I chose a composable page architecture — pages are stored as ordered lists of section references in Contentful, and the frontend maps each section type to a React component. This keeps the CMS flexible (editors can reorder or swap sections) while the frontend stays type-safe and predictable.
+CMS-driven promotional campaign page using **Next.js 16**, **Tailwind CSS v4**, and **Contentful**. Pages are ordered lists of sections; each section type maps to a React component so editors can reorder without code changes.
 
 ## Setup
 
@@ -10,11 +8,14 @@ I chose a composable page architecture — pages are stored as ordered lists of 
 npm install
 ```
 
-Create `.env.local`:
+Create `.env.local` (or copy from `.env.example`) with:
 
 ```
-CONTENTFUL_SPACE_ID=...
-CONTENTFUL_ACCESS_TOKEN=...
+CONTENTFUL_SPACE_ID=your_space_id
+CONTENTFUL_ACCESS_TOKEN=your_delivery_token          # required to run
+CONTENTFUL_PREVIEW_TOKEN=your_preview_token          # optional, for preview usage
+CONTENTFUL_MANAGEMENT_TOKEN=your_management_token    # required for codegen/seed scripts only
+CONTENTFUL_ENVIRONMENT=master                        # defaults to master if unset
 ```
 
 Run:
@@ -27,10 +28,10 @@ Open [http://localhost:3000](http://localhost:3000) — redirects to `/campaign`
 
 ## Tech Stack
 
-- **Next.js 16** — App Router, Server Components, async `params`
-- **Tailwind CSS v4** — via PostCSS plugin, using `@theme` tokens
-- **Contentful** — headless CMS (free tier), Delivery + Management APIs
-- **TypeScript** — strict mode
+- Next.js 16 (App Router)
+- Tailwind CSS v4 (`@theme` tokens)
+- Contentful (Delivery + Management APIs)
+- TypeScript
 
 ## Content Model
 
@@ -51,22 +52,20 @@ Demo content is seeded via `contentful/02_seed_content.js` (requires `CONTENTFUL
 
 The "Shop Now" CTA entry is referenced by both the Hero and the Promotion Grid sections. Updating it in Contentful changes both places at once — no duplication.
 
-## Key Decisions
+## Notes
 
-- **Reusable CTA type.** CTAs are their own content type rather than inline fields, so the same button can appear in multiple sections.
-- **Section-based composition.** Pages reference an ordered array of typed sections. Adding a new section type (e.g. a testimonial block) means creating one content type and one React component — no restructuring.
-- **Manual TypeScript types.** I wrote interfaces by hand to keep the setup simple. For a production app, I'd generate them with `contentful-typescript-codegen`.
-- **`include: 3` depth.** The content model is 3 levels deep at most (Page → Section → CTA), so there's no need for a higher resolve depth.
+- CTAs are reusable entries; the same CTA is used in hero and promotion grid to prove reuse.
+- Pages compose ordered sections; adding a new section means one content type + one React component.
+- API fetch uses `include: 3` (Page → Section → CTA/Promotion), which is sufficient for this model.
 
-## Tradeoffs & Future Improvements
+## Type Generation (Contentful)
 
-- Types mirror the Contentful model manually. For larger projects I'd likely generate these.
+- Run `npm run codegen` to regenerate `src/types/contentful.d.ts` from the current Contentful space using `contentful-typescript-codegen`.
+- Requires `CONTENTFUL_SPACE_ID`, `CONTENTFUL_MANAGEMENT_TOKEN`, and optional `CONTENTFUL_ENVIRONMENT` (falls back to `master`). Uses `getContentfulEnvironment.js` to resolve the environment.
+- Rationale: keeping the generated types in sync with the CMS schema gives end-to-end type safety in the React components and catches schema drift early, reducing runtime content-shape errors.
 
-- The seed script is not idempotent — running it twice creates duplicates.
-  A real pipeline would upsert entries by `internalName`.
+## Tradeoffs / Next Steps
 
-- No caching strategy beyond ISR (`revalidate = 60`).
-  For production, I would add on-demand revalidation via Contentful webhooks.
-
-- I prioritized CMS modeling and page composition for this task.
-  If extended further, I would introduce integration tests around the fetch layer and component rendering.
+- Seed script is not idempotent; a real pipeline would upsert by `internalName`.
+- ISR is set to 60s; production would use webhook-driven revalidation.
+- Tests are minimal; would add fetch-layer and render coverage next.

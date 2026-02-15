@@ -1,16 +1,18 @@
-import type { HeroSection } from "@/types"
+import type { IComponentHero, IComponentHeroFields } from "@/types"
 import Cta from "./Cta"
 
-export default function Hero({ data }: { data: HeroSection }) {
-  const { tagline, headline, subline, backgroundImage, ctas } = data.fields
-  const rawUrl = backgroundImage?.fields?.file?.url
-  const bgUrl = rawUrl
-    ? `${rawUrl.startsWith("http") ? rawUrl : `https:${rawUrl}`}?w=1600&fm=webp&q=80`
-    : null
+export default function Hero({ data }: { data: IComponentHero }) {
+  const { tagline, headline, subline, backgroundImage, ctas } = data.fields as IComponentHeroFields
+  const file = backgroundImage?.fields?.file
+  const rawUrl = typeof file === "string" ? file : file?.url
+  const bgUrl =
+    typeof rawUrl === "string"
+      ? `${rawUrl.startsWith("http") ? rawUrl : `https:${rawUrl}`}?w=1600&fm=webp&q=80`
+      : null
 
   return (
     <section
-      className="relative w-full min-h-[380px] md:min-h-[460px] flex flex-col items-center justify-center text-center overflow-hidden bg-[#E8E8E8]"
+      className="relative w-full min-h-[380px] md:min-h-[460px] flex flex-col items-center justify-center text-center overflow-hidden bg-brand-gray-200"
       aria-label="Hero"
     >
       {bgUrl && (

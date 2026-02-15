@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "codegen": "contentful-typescript-codegen --spaceId $CONTENTFUL_SPACE_ID --environmentId ${CONTENTFUL_ENVIRONMENT_ID:-master} --accessToken $CONTENTFUL_MANAGEMENT_TOKEN --output src/types/contentful.d.ts"
   },
   "dependencies": {
     "contentful": "^11.10.3",
@@ -22,6 +23,7 @@
     "@types/react-dom": "^19",
     "contentful-management": "^11.69.2",
     "contentful-migration": "^4.31.7",
+    "contentful-typescript-codegen": "^3.4.0",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "prettier": "^3.8.1",

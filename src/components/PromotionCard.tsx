@@ -1,17 +1,19 @@
 import Link from "next/link"
 import Image from "next/image"
-import type { Promotion } from "@/types"
+import type { IPromotion, IPromotionFields } from "@/types"
 
-export default function PromotionCard({ promotion }: { promotion: Promotion }) {
-  const { title, description, badge, link, image } = promotion.fields
-  const rawUrl = image?.fields?.file?.url
-  const imageUrl = rawUrl
-    ? `${rawUrl.startsWith("http") ? rawUrl : `https:${rawUrl}`}?w=800&fm=webp&q=80`
-    : null
+export default function PromotionCard({ promotion }: { promotion: IPromotion }) {
+  const { title, description, badge, link, image } = promotion.fields as IPromotionFields
+  const file = image?.fields?.file
+  const rawUrl = typeof file === "string" ? file : file?.url
+  const imageUrl =
+    typeof rawUrl === "string"
+      ? `${rawUrl.startsWith("http") ? rawUrl : `https:${rawUrl}`}?w=800&fm=webp&q=80`
+      : null
 
   return (
-    <article className="flex flex-col h-full bg-white border border-[#1D1D1D] overflow-hidden">
-      <div className="relative w-full aspect-[4/3] bg-[#F0F0F0] shrink-0 overflow-hidden">
+    <article className="flex flex-col h-full bg-white border border-brand-black overflow-hidden">
+      <figure className="relative w-full aspect-[4/3] bg-brand-gray-100 shrink-0 overflow-hidden">
         {imageUrl ? (
           <Image
             src={imageUrl}
@@ -26,23 +28,23 @@ export default function PromotionCard({ promotion }: { promotion: Promotion }) {
           </div>
         )}
         {badge && (
-          <div className="absolute top-3 left-3 bg-white border border-[#1D1D1D] px-2 py-1 z-10">
-            <span className="text-xs font-bold uppercase tracking-wide text-[#1D1D1D]">
+          <div className="absolute top-3 left-3 bg-white border border-brand-black px-2 py-1 z-10">
+            <span className="text-xs font-bold uppercase tracking-wide text-brand-black">
               {badge}
             </span>
           </div>
         )}
-      </div>
+      </figure>
 
-      <div className="flex flex-col flex-grow p-4 md:p-5 border-t border-[#1D1D1D]">
-        <h3 className="text-base font-semibold text-[#1D1D1D] mb-2 leading-tight">{title}</h3>
+      <div className="flex flex-col flex-grow p-4 md:p-5 border-t border-brand-black">
+        <h3 className="text-base font-semibold text-brand-black mb-2 leading-tight">{title}</h3>
         {description && (
-          <p className="text-sm text-[#1D1D1D] mb-4 flex-grow line-clamp-2">{description}</p>
+          <p className="text-sm text-brand-black mb-4 flex-grow line-clamp-2">{description}</p>
         )}
         {link && (
           <Link
             href={link}
-            className="inline-block w-full py-2.5 text-center border border-[#1D1D1D] text-sm font-medium text-[#1D1D1D] hover:bg-[#1D1D1D] hover:text-white transition-colors"
+            className="inline-block w-full py-2.5 text-center border border-brand-black text-sm font-medium text-brand-black hover:bg-brand-black hover:text-white transition-colors"
           >
             View Deal
           </Link>

@@ -39,7 +39,9 @@ module.exports = function (migration) {
 
   promotion.createField("badge").name("Badge").type("Symbol") // "20% OFF", "NEW"
 
-  promotion.createField("link").name("Link URL").type("Symbol")
+  promotion.createField("slug").name("Detail Slug").type("Symbol") // future detail page
+
+  promotion.createField("link").name("Link URL").type("Symbol") // external/internal target
 
   promotion.createField("startDate").name("Start Date").type("Date")
   promotion.createField("endDate").name("End Date").type("Date")
@@ -67,6 +69,7 @@ module.exports = function (migration) {
       linkType: "Entry",
       validations: [{ linkContentType: ["callToAction"] }],
     })
+    .validations([{ size: { min: 1 } }])
 
   // Promotion grid
   const grid = migration
@@ -94,7 +97,8 @@ module.exports = function (migration) {
       type: "Link",
       linkType: "Entry",
       validations: [{ linkContentType: ["promotion"] }],
-    }) // This enforces reusability of Promotion entries
+    })
+    .validations([{ size: { min: 1 } }]) // Ensure the grid has content // This enforces reusability of Promotion entries
 
   // Footer
   const footer = migration
@@ -159,4 +163,5 @@ module.exports = function (migration) {
         },
       ],
     })
+    .validations([{ size: { min: 1 } }])
 }

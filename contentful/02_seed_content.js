@@ -1,5 +1,5 @@
 // Note: This script does not check for existing entries.
-// In production, I would upsert instead of blindly creating.
+// In production, upsert by internalName to avoid duplicates.
 import contentful from "contentful-management"
 
 const SPACE_ID = process.env.CONTENTFUL_SPACE_ID
